@@ -1,22 +1,21 @@
-Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
+#Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
 
 This Terraform module allows users to support Dynamic Firewalling by integrating Consul with Cisco Secure Firewall Management Ceneter allowing policies to be updated dynamically based on services in Consul mapped to virtual machines which are updated as and when new machines come up or terminated as per requirement. 
 This module will serve as a source for consul-terraform-sync which works in conjunction with consul to update Dynamic objects on Cisco FMC based on changes detected on services in consul which consul-terraform-sync monitors.
 
-Note: This Terraform module is designed to be used only with consul-terraform-sync
-Feature
+**Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
 
-Prerequisites:
+##Prerequisites:
 
 The dynamic object mapped to the service in Consul should be configured on FMC before using the service in consul-terraform-sync
 
 This module supports the following:
 
-Create, update and delete Dynamic object mappings based on the changes in services in Consul catalog.
+* Create, update and delete Dynamic object mappings based on the changes in services in Consul catalog.
 
 If there is a missing feature or a bug - - open an issue
 
-What is consul-terraform-sync?
+##What is consul-terraform-sync?
 The consul-terraform-sync runs as a daemon that enables a publisher-subscriber paradigm between Consul and Cisco Secure FMC to support Network Infrastructure Automation (NIA).
 
 
@@ -26,6 +25,7 @@ Each task consists of a runbook automation written as a compatible Terraform mod
 
 Please refer to this link for getting started with consul-terraform-sync
 
+'''
 Requirements
 Name	Version
 terraform	>= 0.13
@@ -36,6 +36,7 @@ Name	Version
 fmc	>= 0.2.1
 Compatibility
 This module is meant for use with consul-terraform-sync >= 0.1.0 and Terraform >= 0.13 and fmc versions >= 0.2.1
+'''
 
 Usage
 In order to use this module, you will need to install consul-terraform-sync, create a "task" with this Terraform module as a source within the task, and run consul-terraform-sync.
