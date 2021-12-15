@@ -1,11 +1,11 @@
-#Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
+# Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
 
 This Terraform module allows users to support Dynamic Firewalling by integrating Consul with Cisco Secure Firewall Management Ceneter allowing policies to be updated dynamically based on services in Consul mapped to virtual machines which are updated as and when new machines come up or terminated as per requirement. 
 This module will serve as a source for consul-terraform-sync which works in conjunction with consul to update Dynamic objects on Cisco FMC based on changes detected on services in consul which consul-terraform-sync monitors.
 
 **Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
 
-##Prerequisites:
+## Prerequisites:
 
 The dynamic object mapped to the service in Consul should be configured on FMC before using the service in consul-terraform-sync
 
@@ -53,6 +53,8 @@ consul-terraform-sync v0.4.2
 Compatible with Terraform >= 0.13.0, < 1.1.0
 
 Create a config file "tasks.hcl" for consul-terraform-sync. Please note that this just an example.
+
+'''
 log_level = <log_level> # eg. "info"
 
 driver "terraform" {
@@ -83,6 +85,7 @@ task {
   services = ["<list of services you want to subscribe to>"] # eg. ["web", "api"]
   variable_files = ["<list of files that have user variables for this module (please input full path)>"] # eg. ["terraform.tfvars"]
 }
+'''
 
 Start consul-terraform-sync
 $ consul-terraform-sync -config-file=tasks.hcl
