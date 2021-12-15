@@ -15,7 +15,7 @@ This module supports the following:
 
 If there is a missing feature or a bug - - open an issue
 
-##What is consul-terraform-sync?
+## What is consul-terraform-sync?
 The consul-terraform-sync runs as a daemon that enables a publisher-subscriber paradigm between Consul and Cisco Secure FMC to support Network Infrastructure Automation (NIA).
 
 
@@ -25,7 +25,7 @@ Each task consists of a runbook automation written as a compatible Terraform mod
 
 Please refer to this link for getting started with consul-terraform-sync
 
-'''
+```
 Requirements
 Name	Version
 terraform	>= 0.13
@@ -36,9 +36,10 @@ Name	Version
 fmc	>= 0.2.1
 Compatibility
 This module is meant for use with consul-terraform-sync >= 0.1.0 and Terraform >= 0.13 and fmc versions >= 0.2.1
-'''
+```
 
-Usage
+**Usage
+
 In order to use this module, you will need to install consul-terraform-sync, create a "task" with this Terraform module as a source within the task, and run consul-terraform-sync.
 
 The users can subscribe to the services in the consul catalog and define the Terraform module which will be executed when there are any updates to the subscribed services using a "task".
@@ -48,13 +49,15 @@ The users can subscribe to the services in the consul catalog and define the Ter
 Download the consul-terraform-sync on a node which is highly available (prefrably, a node running a consul client)
 Add consul-terraform-sync to the PATH on that node
 Check the installation
+```
  $ consul-terraform-sync --version
 consul-terraform-sync v0.4.2
 Compatible with Terraform >= 0.13.0, < 1.1.0
+```
 
 Create a config file "tasks.hcl" for consul-terraform-sync. Please note that this just an example.
 
-'''
+```
 log_level = <log_level> # eg. "info"
 
 driver "terraform" {
@@ -85,7 +88,7 @@ task {
   services = ["<list of services you want to subscribe to>"] # eg. ["web", "api"]
   variable_files = ["<list of files that have user variables for this module (please input full path)>"] # eg. ["terraform.tfvars"]
 }
-'''
+```
 
 Start consul-terraform-sync
 $ consul-terraform-sync -config-file=tasks.hcl
