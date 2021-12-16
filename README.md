@@ -38,7 +38,7 @@ Compatibility
 This module is meant for use with consul-terraform-sync >= 0.1.0 and Terraform >= 0.13 and fmc versions >= 0.2.1
 ```
 
-**Usage
+**Usage**
 
 In order to use this module, you will need to install consul-terraform-sync, create a "task" with this Terraform module as a source within the task, and run consul-terraform-sync.
 
