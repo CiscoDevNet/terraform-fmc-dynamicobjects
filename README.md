@@ -3,6 +3,8 @@
 This Terraform module allows users to support Dynamic Firewalling by integrating Consul with **Cisco Secure Firewall Management Ceneter** allowing policies to be updated dynamically based on services in Consul mapped to virtual machines which are updated as and when new machines come up or terminated as per requirement. 
 This module will serve as a source for consul-terraform-sync which works in conjunction with consul to update **Dynamic objects** on Cisco FMC based on changes detected on services in consul which consul-terraform-sync monitors.
 
+Network constructs such as IP address are not reliable in virtual, cloud and container environments due to the dynamic nature of the workloads and the inevitability of IP address overlap. 
+
 #### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
 
 ## Prerequisites:
