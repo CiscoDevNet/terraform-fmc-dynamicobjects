@@ -1,44 +1,27 @@
 # Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
 
-With shift to dynamic infrastructure, it becomes difficult for SecOps team to keep track efficiently and dynamic firewalling becomes an important requirement. This Terraform module works in conjunction with Hashicorp's Consul to automate this utlizing Cisco Secure Firewall Dynamic Objects.  
+With shift to dynamic infrastructure, it becomes difficult for SecOps team to keep track of changes efficiently and dynamic firewalling becomes an important requirement. This Terraform module works in conjunction with Hashicorp's Consul to automate this requirement utlizing Cisco Secure Firewall **Dynamic Objects**.   
 
-HashiCorp Consul is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality across several environments. Its service discovery feature allows Consul agents to register services to a central registry and other clients can use Consul to discover providers of a given service. It keeps track of all the services, the nodes on which these services are running and their health status. This information can be used to automate network and security tasks.
+HashiCorp **Consul** is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality across several environments. Its service discovery feature allows Consul agents to register services to a central registry and other clients can use Consul to discover providers of a given service. It keeps track of all the services, the nodes on which these services are running and their health status. This information can be used to automate network and security tasks.
 
-Network Infrastructure Automation (NIA) enables dynamic updates to network infrastructure devices triggered by service changes. Consul-Terraform-Sync utilizes Consul as a data source that contains networking information about services and watches Consul state changes at the application layer (based on service health change, new instance deployed, etc.) and forwards the data to a Terraform module that is automatically triggered. Terraform is used as the underlying automation tool and leverages the Terraform provider ecosystem to drive relevant changes to the network infrastructure. It executes one or more automation tasks with the most recent service variable values from the Consul service catalog. 
+Network Infrastructure Automation (NIA) using **Consul-Terraform-Sync** enables dynamic updates to network infrastructure devices triggered by service changes. It  utilizes Consul as a data source that contains networking information about services, watches Consul state changes based on service health change, new instance registered/unregistered and forwards the data to a Terraform module that is automatically triggered. 
+The automation task is executed with the most recent service variable values from the Consul service catalog. Each task consists of a runbook automation written as a Consul-Terraform-Sync compatible Terraform module using resources and data sources for the underlying network infrastructure allowing your day-2 operations to be constantly aligned with your application state and reduce manual ticketing processes.
+[Please refer to this link for getting started with consul-terraform-sync](https://learn.hashicorp.com/tutorials/consul/consul-terraform-sync-intro?in=consul/network-infrastructure-automation)
 
-Each task consists of a runbook automation written as a Consul-Terraform-Sync compatible Terraform module using resources and data sources for the underlying network infrastructure. 
-Consul-Terraform-Sync runs the engine that 
-This sequence allows your day-2 operations to be constantly aligned with your application state and reduce manual ticketing processes. 
-
-Dynamic objects in Cisco FMC are used to update values of objects dynamically and are applied to the firewall directly.
-
-This module will work with Consul-Terraform-Sync to achieve Network Infrastructure Automation by dynamically managing registration/de-registration of Consul services within the existing network infrastructure. It will make use of task which is a construct in Consul-Terraform-Sync that defines the automation of Terraform and the module.
+This module manages **Dynamic objects** in **Cisco Secure Firewall Management Center (FMC)** to dymanically update values of objects that are applied as access rules to the firewall directly. Consul-Terraform-Sync forwards the updates for monitored services that it receives from Consul catalog, such as new nodes being registered, nodes being deregistered or nodes becoming unhealthy. This acts as input for the module which updates the dynamic objects present on FMC with the latest and updated list of IP addresses automatically.
 
 ![image](https://github.com/CiscoDevNet/terraform-fmc-dynamicobjects/blob/main/images/flow.png)
 
 
 #### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
 
+## This module supports the following:
+
+* Create, update and delete **Dynamic object mappings** based on the changes in services in Consul catalog.
+
 ## Prerequisites:
 
-The dynamic object mapped to the service in Consul should be configured on FMC before using the service in consul-terraform-sync
-
-This module supports the following:
-
-* Create, update and delete Dynamic object mappings based on the changes in services in Consul catalog.
-
-If there is a missing feature or a bug - - open an issue
-
-## What is consul-terraform-sync?
-The *consul-terraform-sync runs* is a daemon that enables a publisher-subscriber paradigm between Consul and Cisco Secure FMC to support Network Infrastructure Automation (NIA).
-
-
-consul-terraform-sync subscribes to updates from the Consul catalog and executes one or more automation "tasks" with appropriate value of service variables based on those updates. consul-terraform-sync leverages Terraform as the underlying automation tool and utilizes the Terraform provider ecosystem to drive relevant change to the network infrastructure.
-
-Each task consists of a runbook automation written as a compatible Terraform module using resources and data sources for the underlying network infrastructure provider.
-
-Please refer to this link for getting started with consul-terraform-sync
-
+The dynamic objects mapped to the services in Consul should be created on FMC and applied in an access rule as per user's requirements before running consul-terraform-sync for the services.
 
 ## Requirements
 
@@ -56,15 +39,14 @@ Please refer to this link for getting started with consul-terraform-sync
 
 ## Usage
 
-In order to use this module, you will need to install consul-terraform-sync, create a "task" with this Terraform module as a source within the task, and run consul-terraform-sync.
+In order to use this module, you will need to install consul-terraform-sync, create a "task" with this Terraform module as a source within the task, subscribe to the services in the consul catalog and run consul-terraform-sync.
 
-The users can subscribe to the services in the consul catalog and define the Terraform module which will be executed when there are any updates to the subscribed services using a "task".
+The Terraform module will be executed when there are any updates to the subscribed services.
 
 **~> Note:** It is recommended to have the consul-terraform-sync config guide for reference.
 
-1. Download the consul-terraform-sync on a node which is highly available (prefrably, a node running a consul client)
-2. Add consul-terraform-sync to the PATH on that node
-3. Check the installation
+1. Download and install the consul-terraform-sync following the download guide
+2. Check the installation
 
 ```
 $ consul-terraform-sync --version
@@ -72,7 +54,7 @@ consul-terraform-sync v0.4.2
 Compatible with Terraform >= 0.13.0, < 1.1.0
 ```
 
-4. Create a config file "tasks.hcl" for consul-terraform-sync. Please note that this just an example.
+3. Create a config file "tasks.hcl" for consul-terraform-sync. Please note that this just an example.
 
 ```
 log_level = <log_level> # eg. "info"
@@ -81,7 +63,7 @@ driver "terraform" {
   required_providers {
     fmc = {
       source = "CiscoDevNet/fmc"
-      version = "0.2.1"
+      version = "0.2.2"
     }
   }
 }
@@ -107,27 +89,22 @@ task {
 }
 ```
 
-5. Start consul-terraform-sync
+4. Start consul-terraform-sync
 
 ```
 $ consul-terraform-sync -config-file=tasks.hcl
 ```
-consul-terraform-sync will update Dynamic object mappings on FMC based on service updates in consul catalog.
 
-consul-terraform-sync is now subscribed to the Consul catalog. Any updates to the serices identified in the task will result in updating the dynamic object mapping on Cisco FMC
+consul-terraform-sync is now subscribed to the Consul catalog. Any updates to the serices identified in the task will result in updating the dynamic object mapping on Cisco FMC. The updates are fed as an input variable to the module.
 
-**~> Note:** If you are interested in how consul-terraform-sync works, please refer to this section.
+## Inputs
 
-Inputs
 | Name	 | Description	| Type	| Default	| Required |
 |------|-------------|------|---------|:--------:|
 | services	| Consul services monitored by consul-terraform-sync	| <pre>map(<br>    object({<br>      id        = string<br>      name      = string<br>      address   = string<br>      port      = number<br>      meta      = map(string)<br>      tags      = list(string)<br>      namespace = string<br>      status    = string<br><br>      node                  = string<br>      node_id               = string<br>      node_address          = string<br>      node_datacenter       = string<br>      node_tagged_addresses = map(string)<br>      node_meta             = map(string)<br>    })<br>  )</pre> | n/a | yes |
 
 
-## How does consul-terraform-sync work?
-There are 2 aspects of consul-terraform-sync.
-
-1. Updates from Consul catalog: In the backend, consul-terraform-sync creates a blocking API query session with the Consul agent indentified in the config to get updates from the Consul catalog. consul-terraform-sync. consul-terraform-sync will get an update for the services in the consul catalog when any of the following service attributes are created, updated or deleted. These updates include service creation and deletion as well.
+consul-terraform-sync creates a blocking API query session with the Consul agent indentified in the config to get updates from the Consul catalog. It gets an update for the services when any of the following service attributes are created, updated or deleted. These updates include service creation and deletion as well.
 service id
 service name
 service address
@@ -142,19 +119,18 @@ node datacenter
 node tagged addresses
 node meta
 
-2. Managing the entire Terraform workflow: If a task and is defined, one or more services are associated with the task, provider is declared in the task and a Terraform module is specified using the source field of the task, the following sequence of events will occur:
+## Workflow
 
 consul-terraform-sync will install the required version of Terraform.
 consul-terraform-sync will install the required version of the Terraform provider defined in the config file and declared in the "task".
-A new direstory "sync-tasks" with a sub-directory corresponding to each "task" will be created. This is the reason for having strict guidelines around naming.
-Each sub-directory corresponds to a separate Terraform workspace.
-Within each sub-directory corresponding a task, consul-terraform-sync will template a main.tf, variables.tf, terraform.tfvars and terraform.tfvars.tmpl.
+A new direstory "sync-tasks" with a sub-directory corresponding to each "task" will be created.
+Within each sub-directory corresponding a task, consul-terraform-sync will create main.tf, variables.tf, providers.tfvars, terraform.tfvars and terraform.tfvars.tmpl files.
 
 * **main.tf:**
 
 This file contains declaration for the required terraform and provider versions based on the task definition.
 In addition, this file has the module (identified by the 'source' field in the task) declaration with the input variables
-Consul K/V is used as the backend state for fo this Terraform workspace.
+
 example generated main.tf:
 ```terraform
 # This file is generated by Consul NIA.
@@ -168,11 +144,8 @@ terraform {
   required_providers {
     fmc = {
       source  = "CiscoDevNet/fmc"
-      version = "0.2.1"
+      version = "0.2.2"
     }
-  }
-  backend "local" {
-    path = "/Users/sameersingh/git_repos/consul-fmc-dynamicobjects/terraform.tfstate"
   }
 }
 
@@ -192,6 +165,7 @@ module "web" {
  * **variables.tf:**
 
 This is variables.tf file defined in the module
+
 example generated variables.tf
 ```terraform
 variable "services" {
@@ -218,12 +192,14 @@ description = "Consul services monitored by Consul NIA"
 }
 ```
 
+* **providers.tfvars:**
+* This file contains the values for the variables that are used to define the providers in the task.
+
 * **terraform.tfvars:**
 * This is the most important file generated by consul-terraform-sync.
 * This variables file is generated with the most updated values from Consul catalog for all the services identified in the task.
 * consul-terraform-sync updates this file with the latest values when the corresponding service gets updated in Consul catalog.
 
-Network Infrastructure Automation (NIA) compatible modules are built to utilize the above service variables
-
 consul-terraform-sync manages the entire Terraform workflow of plan, apply and destroy for all the individual workspaces corrresponding to the defined "tasks" based on the updates to the services to those tasks.
-In summary, consul-terraform-sync triggers a Terraform workflow (plan, apply, destroy) based on updates it detects from Consul catalog.
+
+If there is a missing feature or a bug - - open an issue
