@@ -1,9 +1,21 @@
 # Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
 
-This Terraform module allows users to support Dynamic Firewalling by integrating Consul with **Cisco Secure Firewall Management Ceneter** allowing policies to be updated dynamically based on services in Consul mapped to virtual machines which are updated as and when new machines come up or terminated as per requirement. 
-This module will serve as a source for consul-terraform-sync which works in conjunction with consul to update **Dynamic objects** on Cisco FMC based on changes detected on services in consul which consul-terraform-sync monitors.
+With shift to dynamic infrastructure, it becomes difficult for SecOps team to keep track efficiently and dynamic firewalling becomes an important requirement. This Terraform module works in conjunction with Hashicorp's Consul to automate this utlizing Cisco Secure Firewall Dynamic Objects.  
 
-Network constructs such as IP address are not reliable in virtual, cloud and container environments due to the dynamic nature of the workloads and the inevitability of IP address overlap. 
+HashiCorp Consul is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality across several environments. Its service discovery feature allows Consul agents to register services to a central registry and other clients can use Consul to discover providers of a given service. It keeps track of all the services, the nodes on which these services are running and their health status. This information can be used to automate network and security tasks.
+
+Network Infrastructure Automation (NIA) enables dynamic updates to network infrastructure devices triggered by service changes. Consul-Terraform-Sync utilizes Consul as a data source that contains networking information about services and watches Consul state changes at the application layer (based on service health change, new instance deployed, etc.) and forwards the data to a Terraform module that is automatically triggered. Terraform is used as the underlying automation tool and leverages the Terraform provider ecosystem to drive relevant changes to the network infrastructure. It executes one or more automation tasks with the most recent service variable values from the Consul service catalog. 
+
+Each task consists of a runbook automation written as a Consul-Terraform-Sync compatible Terraform module using resources and data sources for the underlying network infrastructure. 
+Consul-Terraform-Sync runs the engine that 
+This sequence allows your day-2 operations to be constantly aligned with your application state and reduce manual ticketing processes. 
+
+Dynamic objects in Cisco FMC are used to update values of objects dynamically and are applied to the firewall directly.
+
+This module will work with Consul-Terraform-Sync to achieve Network Infrastructure Automation by dynamically managing registration/de-registration of Consul services within the existing network infrastructure. It will make use of task which is a construct in Consul-Terraform-Sync that defines the automation of Terraform and the module.
+
+![image]()
+
 
 #### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
 
