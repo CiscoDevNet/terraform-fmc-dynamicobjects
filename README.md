@@ -1,6 +1,6 @@
 # Cisco Secure Firewall Dynamic Objects module for Network Infrastructure Automation (NIA)
 
-With shift to dynamic infrastructure, it becomes difficult for SecOps team to keep track of changes efficiently and dynamic firewalling becomes an important requirement. This Terraform module works in conjunction with Hashicorp's Consul to automate this requirement utlizing Cisco Secure Firewall **Dynamic Objects**.   
+With shift to dynamic infrastructure, it becomes difficult for SecOps team to keep track of changes efficiently and dynamic firewalling becomes an important requirement. This Terraform module works in conjunction with Hashicorp's Consul to automate this requirement utilizing Cisco Secure Firewall **Dynamic Objects**.   
 
 HashiCorp **Consul** is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality across several environments. Its service discovery feature allows Consul agents to register services to a central registry and other clients can use Consul to discover providers of a given service. It keeps track of all the services, the nodes on which these services are running and their health status. This information can be used to automate network and security tasks.
 
@@ -123,7 +123,7 @@ node meta
 
 consul-terraform-sync will install the required version of Terraform.
 consul-terraform-sync will install the required version of the Terraform provider defined in the config file and declared in the "task".
-A new direstory "sync-tasks" with a sub-directory corresponding to each "task" will be created.
+A new directory "sync-tasks" with a sub-directory corresponding to each "task" will be created.
 Within each sub-directory corresponding a task, consul-terraform-sync will create main.tf, variables.tf, providers.tfvars, terraform.tfvars and terraform.tfvars.tmpl files.
 
 * **main.tf:**
@@ -200,6 +200,6 @@ description = "Consul services monitored by Consul NIA"
 * This variables file is generated with the most updated values from Consul catalog for all the services identified in the task.
 * consul-terraform-sync updates this file with the latest values when the corresponding service gets updated in Consul catalog.
 
-consul-terraform-sync manages the entire Terraform workflow of plan, apply and destroy for all the individual workspaces corrresponding to the defined "tasks" based on the updates to the services to those tasks.
+consul-terraform-sync manages the entire Terraform workflow of plan, apply and destroy for all the individual workspaces corresponding to the defined "tasks" based on the updates to the services to those tasks.
 
 If there is a missing feature or a bug - - open an issue
