@@ -14,7 +14,7 @@ Dynamic objects in Cisco FMC are used to update values of objects dynamically an
 
 This module will work with Consul-Terraform-Sync to achieve Network Infrastructure Automation by dynamically managing registration/de-registration of Consul services within the existing network infrastructure. It will make use of task which is a construct in Consul-Terraform-Sync that defines the automation of Terraform and the module.
 
-![image]()
+![image](https://github.com/CiscoDevNet/terraform-fmc-dynamicobjects/blob/main/images/flow.png)
 
 
 #### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
