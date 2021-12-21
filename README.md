@@ -8,7 +8,7 @@ Network Infrastructure Automation (NIA) using **Consul-Terraform-Sync** enables 
 The automation task is executed with the most recent service variable values from the Consul service catalog. Each task consists of a runbook automation written as a Consul-Terraform-Sync compatible Terraform module using resources and data sources for the underlying network infrastructure allowing your day-2 operations to be constantly aligned with your application state and reduce manual ticketing processes.
 [Please refer to this link for getting started with consul-terraform-sync](https://learn.hashicorp.com/tutorials/consul/consul-terraform-sync-intro?in=consul/network-infrastructure-automation)
 
-This module manages **Dynamic objects** in **Cisco Secure Firewall Management Center (FMC)** to dymanically update values of objects that are applied as access rules to the firewall directly. Consul-Terraform-Sync forwards the updates for monitored services that it receives from Consul catalog, such as new nodes being registered, nodes being deregistered or nodes becoming unhealthy. This acts as input for the module which updates the dynamic objects present on FMC with the latest and updated list of IP addresses automatically.
+This module manages **Dynamic objects** in **Cisco Secure Firewall Management Center (FMC)** to dynamically update values of objects that are applied as access rules to the firewall directly. Consul-Terraform-Sync forwards the updates for monitored services that it receives from Consul catalog, such as new nodes being registered, nodes being deregistered or nodes becoming unhealthy. This acts as input for the module which updates the dynamic objects present on FMC with the latest and updated list of IP addresses automatically. This module obtains object IDs from FMC based on the service name and updates the mappings for those objects accordingly.
 
 ![image](https://github.com/CiscoDevNet/terraform-fmc-dynamicobjects/blob/main/images/flow.png)
 
@@ -21,7 +21,7 @@ This module manages **Dynamic objects** in **Cisco Secure Firewall Management Ce
 
 ## Prerequisites:
 
-The dynamic objects mapped to the services in Consul should be created on FMC and applied in an access rule as per user's requirements before running consul-terraform-sync for the services.
+The dynamic objects mapped to the services in Consul should be created on FMC with the same name as the service and applied in an access rule as per user's requirements before running consul-terraform-sync for the services.
 
 ## Requirements
 
