@@ -13,7 +13,7 @@ This module manages **Dynamic objects** in **Cisco Secure Firewall Management Ce
 ![image](https://github.com/CiscoDevNet/terraform-fmc-dynamicobjects/blob/main/images/flow.png)
 
 
-#### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature**
+#### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature
 
 ## This module supports the following:
 
