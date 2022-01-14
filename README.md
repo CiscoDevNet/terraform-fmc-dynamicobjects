@@ -145,7 +145,7 @@ provider "fmc" {
 
 # update policies based on node availability
 module "web" {
-  source   = "/Users/sameersingh/git_repos/terraform-fmc-dynamicobject"
+  source   = "CiscoDevnet/terraform-fmc-dynamicobject"
   services = var.services
 }
 ```
