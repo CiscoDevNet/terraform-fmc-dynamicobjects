@@ -105,19 +105,6 @@ consul-terraform-sync is now subscribed to the Consul catalog. Any updates to th
 
 
 consul-terraform-sync creates a blocking API query session with the Consul agent indentified in the config to get updates from the Consul catalog. It gets an update for the services when any of the following service attributes are created, updated or deleted. These updates include service creation and deletion as well.
-service id
-service name
-service address
-service port
-service meta
-service tags
-service namespace
-service health status
-node id
-node address
-node datacenter
-node tagged addresses
-node meta
 
 ## Workflow
 
