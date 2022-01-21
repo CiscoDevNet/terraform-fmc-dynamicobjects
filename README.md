@@ -10,8 +10,9 @@ The automation task is executed with the most recent service variable values fro
 
 This module manages **Dynamic objects** in **Cisco Secure Firewall Management Center (FMC)** to dynamically update values of objects that are applied as access rules to the firewall directly. Consul-Terraform-Sync forwards the updates for monitored services that it receives from Consul catalog, such as new nodes being registered, nodes being deregistered or nodes becoming unhealthy. This acts as input for the module which updates the dynamic objects present on FMC with the latest and updated list of IP addresses automatically. This module obtains object IDs from FMC based on the service name and updates the mappings for those objects accordingly.
 
-![image](https://github.com/CiscoDevNet/terraform-fmc-dynamicobjects/blob/main/images/flow.png)
-
+<p align="left">
+<img width="800" src=""> </a>
+</p>
 
 #### Note: This Terraform module is designed to be used only with consul-terraform-sync Feature
 
